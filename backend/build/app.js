@@ -44,8 +44,11 @@ var path_1 = __importDefault(require("path"));
 var express_1 = __importDefault(require("express"));
 var body_parser_1 = __importDefault(require("body-parser"));
 var morgan_1 = __importDefault(require("morgan"));
+var mongoose_1 = __importDefault(require("mongoose"));
 var port = 5010;
 var app = express_1.default();
+var visit_1 = require("./models/visit");
+var dateTimeChecker_1 = require("./utils/dateTimeChecker");
 var accessLogStream = fs_1.default.createWriteStream(path_1.default.join(__dirname, "logs", "access.log"), { flags: "a" });
 app.use(morgan_1.default("combined", { stream: accessLogStream }));
 app.use(body_parser_1.default.json());
@@ -53,12 +56,83 @@ app.get("/", function (req, res) {
     res.send("Hello world!");
 });
 app.post("/visit", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-        console.log("/visit is hit");
-        res.send("Recorded!!");
-        return [2 /*return*/];
+    var _a, url, element, visit, result, err_1;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                console.log("/visit is hit");
+                _a = req.body, url = _a.url, element = _a.element;
+                visit = new visit_1.VisitModel({
+                    url: url,
+                    element: element,
+                    timestamp: new Date(Date.now()),
+                });
+                _b.label = 1;
+            case 1:
+                _b.trys.push([1, 3, , 4]);
+                return [4 /*yield*/, visit.save()];
+            case 2:
+                result = _b.sent();
+                res.status(201).json({
+                    message: "Visit saved",
+                    visit: result,
+                });
+                console.log("saved visit! " + JSON.stringify(result, null, 2));
+                return [3 /*break*/, 4];
+            case 3:
+                err_1 = _b.sent();
+                console.log("Error saving visit", err_1);
+                res.status(500).json({ message: "Failed to save visit" });
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
+        }
     });
 }); });
-app.listen(port, function () {
-    console.log("Listening to port " + port);
+app.get("/visits", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, startDate, endDate, result, error_1;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                console.log("/visit is hit, query", req.query);
+                _a = req.query, startDate = _a.startDate, endDate = _a.endDate;
+                _b.label = 1;
+            case 1:
+                _b.trys.push([1, 3, , 4]);
+                ("startDate format not correct");
+                if (!dateTimeChecker_1.isValid(startDate))
+                    throw new Error("startDate format not correct");
+                if (!dateTimeChecker_1.isValid(endDate))
+                    throw new Error("startDate format not correct");
+                return [4 /*yield*/, visit_1.VisitModel.find({
+                        timestamp: {
+                            $gte: new Date(new Date(startDate).setHours(0, 0, 0)),
+                            $lt: new Date(new Date(endDate).setHours(23, 59, 59)),
+                        },
+                    })];
+            case 2:
+                result = _b.sent();
+                console.log("result:", result);
+                res.send(result);
+                return [3 /*break*/, 4];
+            case 3:
+                error_1 = _b.sent();
+                console.log(error_1);
+                res.status(400).json({ message: error_1.message });
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
+        }
+    });
+}); });
+mongoose_1.default.connect(
+// `mongodb://${process.env.DB_USER}:${process.env.DB_PWD}@mongodb:27017/course-goals?authSource=admin`,
+"mongodb://fpadmin:secret@mongodb:27017/course-goals?authSource=admin", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+}, function (err) {
+    if (err) {
+        console.log("Failed to connect to MongoDB", err);
+    }
+    app.listen(port, function () {
+        console.log("Listening to port " + port);
+    });
 });
