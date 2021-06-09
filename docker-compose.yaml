@@ -1,0 +1,25 @@
+version: "3.8"
+services:
+  mongodb:
+    image: "mongo"
+    volumes:
+      - footprint-data:/data/db
+    env_file:
+      - ./env/mongo.env
+
+  backend:
+    build: ./backend
+    ports:
+      - "5010:5010"
+    volumes:
+      - footprint-logs:/app/logs
+      - ./backend/build:/app/build
+    env_file:
+      - ./env/backend.env
+
+    depends_on:
+      - mongodb
+
+volumes:
+  footprint-data:
+  footprint-logs:
