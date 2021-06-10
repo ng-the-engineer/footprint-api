@@ -16,7 +16,7 @@ spec:
         - name: backend
           # image: engineer5/footprint-backend
           image: okteto.dev/footprint-backend
-          imagePullPolicy: Always
+          # imagePullPolicy: Always
           env:
             - name: DB_USER
               valueFrom:
