@@ -14,7 +14,8 @@ spec:
     spec:
       containers:
         - name: backend
-          image: engineer5/footprint-backend
+          # image: engineer5/footprint-backend
+          image: okteto.dev/footprint-backend
           imagePullPolicy: Always
           env:
             - name: DB_USER
