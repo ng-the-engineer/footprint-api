@@ -32,5 +32,6 @@ spec:
 
       volumes:
         - name: footprint-volume
-          persistentVolumeClaim:
-            claimName: host-pvc
+          # persistentVolumeClaim:
+          #   claimName: host-pvc
+          emptyDir: {}
