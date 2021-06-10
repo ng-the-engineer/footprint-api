@@ -7,4 +7,4 @@ data:
   MONGO_INITDB_ROOT_PASSWORD: secret
   DB_USER: fpadmin
   DB_PWD: secret
-  DB_ADDRESS: mongodb.default
+  DB_ADDRESS: mongodb.ng-the-engineer
