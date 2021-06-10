@@ -1,5 +1,5 @@
-name: api
-persistentVolume:
-  enabled: true
-  storageClass: standard
-  size: 1Gi
+# name: api
+# persistentVolume:
+#   enabled: true
+#   storageClass: standard
+#   size: 1Gi
