@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: footprint-env
+data:
+  MONGO_INITDB_ROOT_USERNAME: fpadmin
+  MONGO_INITDB_ROOT_PASSWORD: secret
+  DB_USER: fpadmin
+  DB_PWD: secret
+  DB_ADDRESS: mongodb.default

@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: engineer5/footprint-backend
+          imagePullPolicy: Always
+          env:
+            - name: DB_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: footprint-env
+                  key: DB_USER
+            - name: DB_PWD
+              valueFrom:
+                configMapKeyRef:
+                  name: footprint-env
+                  key: DB_PWD
+            - name: DB_ADDRESS
+              valueFrom:
+                configMapKeyRef:
+                  name: footprint-env
+                  key: DB_ADDRESS
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: 5010
+          #   periodSeconds: 10
+          #   initialDelaySeconds: 5
+          volumeMounts:
+            - mountPath: /app/logs
+              name: footprint-volume
+
+      volumes:
+        - name: footprint-volume
+          persistentVolumeClaim:
+            claimName: host-pvc

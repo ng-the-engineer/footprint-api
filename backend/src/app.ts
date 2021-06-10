@@ -20,7 +20,7 @@ app.use(morgan("combined", { stream: accessLogStream }));
 app.use(bodyParser.json());
 
 app.get("/", (req, res) => {
-  res.send("Hello world!");
+  res.send("Hello world!!!");
 });
 
 app.post("/visit", async (req, res) => {
@@ -75,8 +75,11 @@ app.get(
   }
 );
 
+console.log(`process.env.DB_ADDRESS = ${process.env.DB_ADDRESS}`);
+
 mongoose.connect(
-  `mongodb://${process.env.DB_USER}:${process.env.DB_PWD}@mongodb:27017/course-goals?authSource=admin`,
+  // `mongodb://${process.env.DB_USER}:${process.env.DB_PWD}@mongodb:27017/course-goals?authSource=admin`,
+  `mongodb://${process.env.DB_USER}:${process.env.DB_PWD}@${process.env.DB_ADDRESS}:27017/course-goals?authSource=admin`,
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,

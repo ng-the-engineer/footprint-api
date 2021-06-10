@@ -53,7 +53,7 @@ var accessLogStream = fs_1.default.createWriteStream(path_1.default.join(__dirna
 app.use(morgan_1.default("combined", { stream: accessLogStream }));
 app.use(body_parser_1.default.json());
 app.get("/", function (req, res) {
-    res.send("Hello world!");
+    res.send("Hello world!!!");
 });
 app.post("/visit", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var _a, url, element, visit, result, err_1;
@@ -111,7 +111,6 @@ app.get("/visits", function (req, res) { return __awaiter(void 0, void 0, void 0
                     })];
             case 2:
                 result = _b.sent();
-                console.log("result:", result);
                 res.send(result);
                 return [3 /*break*/, 4];
             case 3:
@@ -123,9 +122,10 @@ app.get("/visits", function (req, res) { return __awaiter(void 0, void 0, void 0
         }
     });
 }); });
+console.log("process.env.DB_ADDRESS = " + process.env.DB_ADDRESS);
 mongoose_1.default.connect(
 // `mongodb://${process.env.DB_USER}:${process.env.DB_PWD}@mongodb:27017/course-goals?authSource=admin`,
-"mongodb://fpadmin:secret@mongodb:27017/course-goals?authSource=admin", {
+"mongodb://" + process.env.DB_USER + ":" + process.env.DB_PWD + "@" + process.env.DB_ADDRESS + ":27017/course-goals?authSource=admin", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 }, function (err) {
