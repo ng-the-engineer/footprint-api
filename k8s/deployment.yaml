@@ -45,11 +45,11 @@ spec:
 
       volumes:
         - name: footprint-volume
-          # persistentVolumeClaim:
-          #   claimName: host-pvc
+          persistentVolumeClaim:
+            claimName: host-pvc
 
-          # emptyDir: {}
+          # emptyDir: {} # It works, but tie to pod
 
-          hostPath:
-            path: /bitnami/fp_data
-            type: DirectoryOrCreate
+          # hostPath: # It does not work
+          #   path: /bitnami/fp_data
+          #   type: DirectoryOrCreate
