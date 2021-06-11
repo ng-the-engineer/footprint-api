@@ -32,6 +32,7 @@ spec:
 
       volumes:
         - name: footprint-volume
-          # persistentVolumeClaim:
-          #   claimName: host-pvc
-          emptyDir: {}
+          persistentVolumeClaim:
+            claimName: host-pvc
+          # emptyDir: {} # It works but pod specific
+          
