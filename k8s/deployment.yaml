@@ -50,5 +50,6 @@ spec:
 
           # emptyDir: {}
 
-          hostPath: /data
-          type: DirectoryOrCreate
+          hostPath:
+            path: /data
+            type: DirectoryOrCreate
