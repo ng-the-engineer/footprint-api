@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: mongodb
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app: mongodb
@@ -35,4 +35,4 @@ spec:
           persistentVolumeClaim:
             claimName: host-pvc
           # emptyDir: {} # It works but pod specific
-          
+
