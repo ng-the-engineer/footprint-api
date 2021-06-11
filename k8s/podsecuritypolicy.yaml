@@ -1,0 +1,19 @@
+apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: example
+spec:
+  seLinux:
+    rule: RunAsAny
+  supplementalGroups:
+    rule: RunAsAny
+  runAsUser:
+    rule: RunAsAny
+  fsGroup:
+    rule: RunAsAny
+  volumes:
+  - '*'
+  privileged: false  # Don't allow privileged pods!
+  allowedHostPaths:
+  - pathPrefix: /fp_data
+    readOnly: false
