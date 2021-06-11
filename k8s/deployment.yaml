@@ -47,4 +47,8 @@ spec:
         - name: footprint-volume
           # persistentVolumeClaim:
           #   claimName: host-pvc
-          emptyDir: {}
+
+          # emptyDir: {}
+
+          hostPath: /data
+          type: DirectoryOrCreate
