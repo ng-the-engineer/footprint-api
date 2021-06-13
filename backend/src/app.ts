@@ -18,6 +18,7 @@ const accessLogStream = fs.createWriteStream(
 );
 app.use(morgan("combined", { stream: accessLogStream }));
 app.use(bodyParser.json());
+app.use(bodyParser.text({ type: "text/*" }));
 
 app.get("/", (req, res) => {
   res.send("Hello world!!!");
@@ -26,6 +27,11 @@ app.get("/", (req, res) => {
 app.post("/visit", async (req, res) => {
   console.log("/visit is hit");
 
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "POST, GET");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+  console.log(req.body);
   const { url, element } = req.body;
 
   const visit = new VisitModel({
