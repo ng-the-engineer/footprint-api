@@ -52,27 +52,30 @@ var dateTimeChecker_1 = require("./utils/dateTimeChecker");
 var accessLogStream = fs_1.default.createWriteStream(path_1.default.join(__dirname, "logs", "access.log"), { flags: "a" });
 app.use(morgan_1.default("combined", { stream: accessLogStream }));
 app.use(body_parser_1.default.json());
+app.use(body_parser_1.default.text({ type: "text/*" }));
 app.get("/", function (req, res) {
-    res.send("Hello world!!!");
+    res.send("Hello world!!!!");
 });
 app.post("/visit", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, url, element, visit, result, err_1;
-    return __generator(this, function (_b) {
-        switch (_b.label) {
+    var obj, url, element, visit, result, err_1;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
             case 0:
                 console.log("/visit is hit");
-                _a = req.body, url = _a.url, element = _a.element;
+                console.log(req.body);
+                _a.label = 1;
+            case 1:
+                _a.trys.push([1, 3, , 4]);
+                obj = JSON.parse(req.body);
+                url = obj.url, element = obj.element;
                 visit = new visit_1.VisitModel({
                     url: url,
                     element: element,
                     timestamp: new Date(Date.now()),
                 });
-                _b.label = 1;
-            case 1:
-                _b.trys.push([1, 3, , 4]);
                 return [4 /*yield*/, visit.save()];
             case 2:
-                result = _b.sent();
+                result = _a.sent();
                 res.status(201).json({
                     message: "Visit saved",
                     visit: result,
@@ -80,7 +83,7 @@ app.post("/visit", function (req, res) { return __awaiter(void 0, void 0, void 0
                 console.log("saved visit! " + JSON.stringify(result, null, 2));
                 return [3 /*break*/, 4];
             case 3:
-                err_1 = _b.sent();
+                err_1 = _a.sent();
                 console.log("Error saving visit", err_1);
                 res.status(500).json({ message: "Failed to save visit" });
                 return [3 /*break*/, 4];

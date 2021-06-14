@@ -4,7 +4,6 @@ import express, { Request } from "express";
 import bodyParser from "body-parser";
 import morgan from "morgan";
 import mongoose from "mongoose";
-import dayjs from "dayjs";
 import { Query } from "./interfaces/query";
 
 const port = 5010;
@@ -21,26 +20,23 @@ app.use(bodyParser.json());
 app.use(bodyParser.text({ type: "text/*" }));
 
 app.get("/", (req, res) => {
-  res.send("Hello world!!!");
+  res.send("Hello world!!!!");
 });
 
 app.post("/visit", async (req, res) => {
   console.log("/visit is hit");
-
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "POST, GET");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-
   console.log(req.body);
-  const { url, element } = req.body;
-
-  const visit = new VisitModel({
-    url,
-    element,
-    timestamp: new Date(Date.now()),
-  });
 
   try {
+    const obj = JSON.parse(req.body);
+    const { url, element } = obj;
+
+    const visit = new VisitModel({
+      url,
+      element,
+      timestamp: new Date(Date.now()),
+    });
+
     const result = await visit.save();
 
     res.status(201).json({
